@@ -8,8 +8,8 @@ export const SCAFFOLD_CONFIG = {
   bayLength: 2.0,       // ความยาวช่วง (m)
   liftHeight: 2.0,      // ความสูงชั้น (m)
   scaffoldWidth: 1.2,   // ความกว้างนั่งร้าน (m)
-  numBays: 3,           // จำนวนช่วง
-  numLifts: 4,          // จำนวนชั้น
+  numBays: 2,           // จำนวนช่วง (แบบนิยม)
+  numLifts: 2,          // จำนวนชั้น (4m — ใช้งานทั่วไป)
 
   tube: {
     od: 0.0483,         // เส้นผ่านศูนย์กลางภายนอก (m)
