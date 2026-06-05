@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="โมเดลนั่งร้าน 3 มิติ ระบบ Tube & Coupler ตามมาตรฐาน BS1139, SG4:22 และ ปตท. สามารถหมุนดู คลิกดูสเปก และแสดงข้อมูลชิ้นส่วนได้">
+  <title>Scaffold 3D Model — BS1139 Tube &amp; Coupler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 3D Viewport Container -->
+    <div id="viewport-container"></div>
+
+    <!-- Title Bar (top-center) -->
+    <div id="title-bar">
+      <h1>🏗️ Scaffold 3D Model</h1>
+      <p>Tube &amp; Coupler System — BS1139 / SG4:22 / ปตท.</p>
+    </div>
+
+    <!-- Controls Hint (top-left) -->
+    <div id="controls-hint" class="panel glass">
+      <div class="hint-row"><span class="hint-key">🖱️ ซ้าย</span><span>หมุนโมเดล</span></div>
+      <div class="hint-row"><span class="hint-key">🔄 Scroll</span><span>ซูมเข้า/ออก</span></div>
+      <div class="hint-row"><span class="hint-key">🖱️ ขวา</span><span>เลื่อนมุมมอง</span></div>
+      <div class="hint-row"><span class="hint-key">👆 คลิก</span><span>ดูสเปกชิ้นส่วน</span></div>
+    </div>
+
+    <!-- Info Panel (right side, hidden by default) -->
+    <div id="info-panel" class="panel glass hidden">
+      <button id="close-panel" class="close-btn" aria-label="ปิด">✕</button>
+      <div id="component-icon" class="component-icon">🔩</div>
+      <h2 id="component-name-th">เลือกชิ้นส่วน</h2>
+      <h3 id="component-name-en">Select a component</h3>
+      <div id="component-standard" class="badge">—</div>
+      <hr class="divider">
+      <p id="component-description" class="description">คลิกที่ชิ้นส่วนบนโมเดลเพื่อดูรายละเอียด</p>
+      <div id="component-specs" class="specs-list">
+        <!-- Specs will be populated dynamically -->
+      </div>
+
+      <!-- Installation Guide Section -->
+      <div id="installation-section" class="hidden">
+        <hr class="divider">
+        <h4 class="section-title">🔧 วิธีติดตั้งที่ถูกต้อง</h4>
+        <div id="component-installation" class="install-steps">
+          <!-- Steps populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Safety Warnings Section -->
+      <div id="warnings-section" class="hidden">
+        <hr class="divider">
+        <h4 class="section-title">⚠️ ข้อควรระวัง</h4>
+        <div id="component-warnings" class="warnings-list">
+          <!-- Warnings populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend Panel (bottom-left) -->
+    <div id="legend" class="panel glass">
+      <h3>🎨 สัญลักษณ์สี</h3>
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="color-dot" style="background: #C0C0C0"></span>
+          <span>โครงสร้างหลัก (Standard / Ledger / Transom)</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-dot" style="background: #FFD700"></span>
+          <span>ทะแยง (Diagonal Bracing)</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-dot" style="background: #4CAF50"></span>
+          <span>ราวกันตก (Guard Rail)</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-dot" style="background: #A0785A"></span>
+          <span>แผ่นปูพื้น (Platform Plank)</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-dot" style="background: #FF9800"></span>
+          <span>แผ่นกันตก / บันได (Toe Board / Ladder)</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-dot" style="background: #555"></span>
+          <span>แคลมป์ / ฐาน (Coupler / Base Plate)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tag System Controls (bottom-right) -->
+    <div id="tag-controls" class="panel glass">
+      <h3>🏷️ ระบบป้ายสี (Tag System — ปตท.)</h3>
+      <div class="tag-buttons">
+        <button class="tag-btn tag-green active" data-color="green">
+          <span class="tag-circle" style="background:#4CAF50"></span>
+          <div>
+            <strong>ปลอดภัย</strong>
+            <small>สมบูรณ์ ใช้งานได้</small>
+          </div>
+        </button>
+        <button class="tag-btn tag-yellow" data-color="yellow">
+          <span class="tag-circle" style="background:#FFEB3B"></span>
+          <div>
+            <strong>ระวัง</strong>
+            <small>กำลังติดตั้ง/รื้อถอน</small>
+          </div>
+        </button>
+        <button class="tag-btn tag-red" data-color="red">
+          <span class="tag-circle" style="background:#F44336"></span>
+          <div>
+            <strong>ห้ามใช้</strong>
+            <small>ชำรุด/หมดอายุ</small>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Label Toggle (top-right) -->
+    <div id="label-toggle" class="panel glass">
+      <label class="toggle-container">
+        <input type="checkbox" id="toggle-labels" checked>
+        <span class="toggle-slider"></span>
+        <span class="toggle-text">แสดงป้ายชื่อ</span>
+      </label>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="loader">
+        <div class="loader-spinner"></div>
+        <p>กำลังโหลดโมเดล 3D...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+    }
+  }
+  </script>
+
+  <!-- Application Entry Point -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
