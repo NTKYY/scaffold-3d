@@ -196,19 +196,14 @@ export function buildScaffold() {
 
   for (let lift = 1; lift <= numLifts; lift++) {
     const y = baseY + lift * liftHeight;
-    // Staggered hatch: ชั้นคู่ (1,3) เปิดช่องฝั่งหน้า, ชั้นคี่ (2,4) เปิดฝั่งหลัง
-    const isHatchFront = lift % 2 === 1;
 
     for (let bay = 0; bay < numBays; bay++) {
+      // Bay 0 = Ladder Bay — ไม่ปูพื้นทั้ง bay
+      if (bay === 0) continue;
+
       const xCenter = bay * bayLength + bayLength / 2;
 
       for (let p = 0; p < planksPerBay; p++) {
-        // ช่อง hatch สำหรับบันได — bay 0 เท่านั้น (ยกเว้นชั้นบนสุด)
-        if (bay === 0 && lift < numLifts) {
-          if (isHatchFront && p < 2) continue;   // เปิดช่องฝั่งหน้า (p=0,1)
-          if (!isHatchFront && p >= 3) continue;  // เปิดช่องฝั่งหลัง (p=3,4)
-        }
-
         const plank = createPlank(bayLength - 0.02);
         const zPlank = p * plankStep + CFG.plank.width / 2 + 0.02;
         plank.position.set(xCenter, y + CFG.plank.thickness / 2, zPlank);
@@ -335,14 +330,7 @@ export function buildScaffold() {
     scaffold.add(ladder);
   }
 
-  // ====================================================================
-  // 11. SCAFFOLD TAG (ป้ายสถานะ) — ติดที่ทางขึ้น bay 0 ระดับสายตา
-  // ====================================================================
-  _tagGroup = createTag('green');
-  // ติดที่ขอบ bay 0 ด้านหน้า ระดับสายตา (~1.5m)
-  _tagGroup.position.set(bayLength / 2, baseY + 1.5, -0.15);
-  _tagGroup.rotation.y = 0; // หันออกด้านหน้า
-  scaffold.add(_tagGroup);
+
 
   // ====================================================================
   // จัดกึ่งกลางนั่งร้านตาม X, Z (ให้หมุนรอบจุดศูนย์กลาง)

@@ -7,10 +7,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
-import { buildScaffold, getTagMesh } from './scaffold-builder.js';
+import { buildScaffold } from './scaffold-builder.js';
 import { createLabels, toggleLabels } from './labels.js';
 import { setupInteraction, updateCameraAnimation } from './interaction.js';
-import { COMPONENT_COLORS } from './specs-data.js';
 
 // ============================================================
 // 1. SCENE
@@ -181,23 +180,7 @@ if (labelCheckbox) {
   });
 }
 
-// --- Tag System Toggle ---
-const tagGroup = getTagMesh();
-const tagButtons = document.querySelectorAll('.tag-btn');
 
-tagButtons.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    // เปลี่ยน active state
-    tagButtons.forEach((b) => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    // เปลี่ยนสีป้าย tag
-    const color = btn.dataset.color;
-    if (tagGroup && tagGroup.userData?.tagMaterial) {
-      tagGroup.userData.tagMaterial.color.setHex(COMPONENT_COLORS.tag[color]);
-    }
-  });
-});
 
 // ============================================================
 // 12. HIDE LOADING SCREEN
